@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { LoginForm } from '@/components/login-form';
 import { MentorApplicationForm } from '@/components/mentor-application-form';
@@ -50,7 +50,7 @@ const AuthFormWrapper = ({ onNavigate, isLogin }: AuthFormWrapperProps) => {
   );
 };
 
-export default function MentorAuthPage() {
+function MentorAuthContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -81,5 +81,19 @@ export default function MentorAuthPage() {
     <div className={`flex w-full ${currentSection === 'mentor-signin' ? 'min-h-screen items-center justify-center' : ''}`}>
       <AuthFormWrapper onNavigate={handleNavigate} isLogin={currentSection === 'mentor-signin'} />
     </div>
+  );
+}
+
+export default function MentorAuthPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex w-full min-h-screen items-center justify-center">
+        <div className="text-center">
+          <p className="text-stone-600">Loading...</p>
+        </div>
+      </div>
+    }>
+      <MentorAuthContent />
+    </Suspense>
   );
 }
