@@ -5,9 +5,8 @@ import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { BookOpen, Users, Award, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
 import { getMentorsWithConnection } from './utils/progressUtils';
-import { mentors as allMentors } from './utils/mockData';
+import { mentors as allMentors, Mentor } from './utils/mockData';
 import { learningTopics, getTopicProgress, TopicLesson, Topic } from './utils/learningMapData';
-
 interface LessonWithTopic extends TopicLesson {
   topic: Topic;
   progress: number;
@@ -16,8 +15,6 @@ interface LessonWithTopic extends TopicLesson {
 // 💡 New Image URL provided by the user
 const NEW_HERO_IMAGE_URL = 'https://t3.ftcdn.net/jpg/00/74/65/96/360_F_74659654_E0VLKWSUlCUzlHKQskuTp2P3wC8kIvNN.jpg';
 
-// Placeholder URL for the decorative totem poles (used for the sides and the About section)
-const DECORATIVE_IMAGE_URL = 'https://images.unsplash.com/photo-1549488347-1f4136e09848?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3RlbSUyMHBvbGUlMjB3b29kJTIwY2FydmluZ3xlbnwxfHx8fDE3NjM0Mzg2NTZ8MA&ixlib=rb-4.1.0&q=80&w=300';
 // Restoring the original image URL for the About Section (which was a totem pole)
 const ABOUT_IMAGE_URL = 'https://images.unsplash.com/photo-1637177304935-382b60b372cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3RlbSUyMHBvbGUlMjBhcnR8ZW58MXx8fHwxNzYzMjYyNDAzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
 
@@ -32,7 +29,7 @@ export default function Home() {
   });
 
   const [inProgressLessons, setInProgressLessons] = useState<LessonWithTopic[]>([]);
-  const [connectedMentors, setConnectedMentors] = useState<any[]>([]);
+  const [connectedMentors, setConnectedMentors] = useState<Mentor[]>([]);
 
   useEffect(() => {
     let totalCompleted = 0;
@@ -49,7 +46,6 @@ export default function Home() {
       totalCompleted += completedLessonIds.length;
 
       if (topicProg === 100) {
-        // fully completed
       } else if (topicProg > 0) {
         const nextLesson = topic.lessons.find((lesson) => !completedLessonIds.includes(lesson.id));
         if (nextLesson) {
@@ -74,7 +70,7 @@ export default function Home() {
     setStats({ totalCompleted, totalInProgress, connectedMentorsCount: 0 });
 
     const mentorsWithConnection = getMentorsWithConnection(allMentors);
-    const connected = mentorsWithConnection.filter((m: any) => m.connected);
+    const connected = mentorsWithConnection.filter((m) => m.connected);
     setConnectedMentors(connected);
     setStats((prev) => ({ ...prev, connectedMentorsCount: connected.length }));
 
@@ -91,7 +87,6 @@ export default function Home() {
 
   return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50">
-
         {/* Hero Section */}
         <section className="relative h-[60vh] overflow-hidden">
           {/* Main Hero Image */}
