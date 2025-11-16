@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function MentorsLayout({
+export default async function LessonsLayout({
   children,
 }: {
   children: React.ReactNode;

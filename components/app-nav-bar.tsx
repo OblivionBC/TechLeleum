@@ -27,7 +27,7 @@ export default function AppNavBar() {
             ${isActive("/") ? "text-white" : "text-[#FBE9C6] hover:text-white"}
           `}
         >
-          Indigenous Youth Code
+          Tech Leleum
         </Link>
 
         

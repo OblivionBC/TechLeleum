@@ -125,6 +125,19 @@ export function getMentorApplications(): MentorApplication[] {
   return applications ? JSON.parse(applications) : [];
 }
 
+export async function getMentorCount(): Promise<number> {
+  if (typeof window === "undefined") return 0;
+
+  const { count, error } = await supabase
+    .from("mentors")
+    .select("*", { count: "exact", head: true });
+
+  if (error || count === null) return 0;
+
+  return count;
+}
+
+
 /**
  * Approve a mentor application (Admin function)
  * This would typically create a record in the mentors table
@@ -262,6 +275,11 @@ export async function loadMentorsWithConnection(): Promise<Mentor[]> {
   const mentors = await getMentors();
   const converted = mentors.map(convertApplicationToMentor);
   return getMentorsWithConnection(converted);
+}
+
+export async function getConnectedMentorsCount(): Promise<number> {
+  const mentors = await loadMentorsWithConnection();
+  return mentors.filter((m) => m.connected).length;
 }
 
 /**
