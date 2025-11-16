@@ -1,0 +1,79 @@
+.lesson-map {
+    position: relative;
+    width: 80%;
+    height: 1200px;
+    margin-top: 60px;
+    background-color: white;
+    margin-left: 10%;
+    margin-right: 10%;
+    border-radius: 70px;
+    padding-top: 70px;
+}
+
+/* dashed lines */
+.lesson-lines {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.dash {
+    stroke: #d0d0d0;
+    stroke-width: 6;
+    stroke-dasharray: 14 14;
+    vector-effect: non-scaling-stroke;
+}
+
+/* Main node (unlocked) */
+.lesson-node {
+    position: absolute;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    background: #ff8a00;
+    border: 3px solid #cc4500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    z-index: 1;
+}
+
+.lesson-node.active:hover {
+    transform: scale(1.08);           /* grow on hover */
+}
+
+.lesson-node .inner-pill {
+    padding: 10px 26px;
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 999px;
+
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+
+    color: #4a2400;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(3px);
+}
+
+
+/* Locked nodes */
+.lesson-node.locked {
+    width: 160px;
+    height: 160px;
+    background: #f3f3f3;
+    border: 6px solid #d5d5d5;
+    color: #777;
+}
+
+.lesson-node.locked span {
+    opacity: 0.65;
+    font-size: 15px;
+    font-weight: 500;
+}

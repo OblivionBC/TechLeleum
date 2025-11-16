@@ -71,14 +71,14 @@ export const getProgress = async (): Promise<UserProgress> => {
   }
 
   try {
-    // Fetch lesson progress
+    // Fetch lessons progress
     const { data: lessonProgressData, error: progressError } = await supabase
       .from("lesson_progress")
       .select("lesson_id, completed, progress_json")
       .eq("user_id", userId);
 
     if (progressError) {
-      console.error("Error fetching lesson progress:", progressError);
+      console.error("Error fetching lessons progress:", progressError);
       return { completedLessons: [], lessonProgress: {}, connectedMentors: [] };
     }
 
@@ -142,7 +142,7 @@ export const saveProgress = async (progress: UserProgress) => {
 };
 
 /**
- * Update or create lesson progress for the current user
+ * Update or create lessons progress for the current user
  */
 export const updateLessonProgress = async (
   lessonId: string,
@@ -184,7 +184,7 @@ export const updateLessonProgress = async (
         .eq("id", existing.id);
 
       if (updateError) {
-        console.error("Error updating lesson progress:", updateError);
+        console.error("Error updating lessons progress:", updateError);
       }
     } else {
       // Create new progress record
@@ -198,7 +198,7 @@ export const updateLessonProgress = async (
         });
 
       if (insertError) {
-        console.error("Error creating lesson progress:", insertError);
+        console.error("Error creating lessons progress:", insertError);
       }
     }
   } catch (error) {

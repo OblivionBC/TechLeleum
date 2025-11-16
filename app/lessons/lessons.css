@@ -1,0 +1,118 @@
+.lesson-page {
+    background: #faf7f2;
+    min-height: 100vh;
+}
+
+/* Header */
+.lesson-header {
+    text-align: center;
+    padding: 60px 20px 30px;
+    background: linear-gradient(180deg, #fbe6b1, transparent);
+}
+
+.lesson-header h1 {
+    font-size: 48px;
+    font-weight: 800;
+    color: #d76a00;
+}
+
+.lesson-header p {
+    font-size: 20px;
+    margin-top: 10px;
+    color: #6b5837;
+}
+
+/* Top Cards Layout */
+.top-cards {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1080px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Progress Card */
+.progress-card {
+    width: 40%;
+    padding: 20px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #ff8a00, #ff3d6a);
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 20px 40px rgba(255, 0, 0, 0.1);
+}
+
+.progress-value {
+    font-size: 48px;
+    font-weight: 800;
+}
+
+.progress-bar {
+    height: 8px;
+    width: 100%;
+    background: #ffffff50;
+    margin-top: 10px;
+    border-radius: 999px;
+}
+
+.progress-fill {
+    height: 8px;
+    width: 0%;
+    border-radius: 999px;
+    background: white;
+}
+
+/* Reminder Card */
+.reminder-card {
+    width: 40%;
+    background: linear-gradient(145deg, #e1e7ff, #ffffff);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 12px 30px rgba(0, 50, 200, 0.1);
+    color: #4a4a7c;
+}
+
+/* Bottom info card */
+.bottom-info-card {
+    max-width: 1080px;
+    margin: 60px auto;
+    padding: 20px 30px;
+    border-radius: 20px;
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.bottom-info-card span {
+    color: #ca6d1b;
+    font-weight: 600;
+}
+
+.theme-button {
+    background: #ffd26f;
+    color: #7a4a00;
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Footer */
+.footer {
+    background: #4a2400;
+    color: #f7d7b9;
+    padding: 40px 20px;
+    text-align: center;
+    margin-top: 80px;
+}
+
+.footer .admin-link {
+    display: inline-block;
+    margin-top: 8px;
+    color: #ffe4b3;
+    font-size: 15px;
+}
