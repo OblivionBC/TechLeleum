@@ -1,12 +1,7 @@
-/**
- * Utility functions for managing mentor applications and approvals
- * Updated to use Supabase instead of localStorage
- */
-
 import { createClient } from "@/lib/supabase/client";
 import { Mentor } from "./mockData";
+import { getProgress } from "./progressUtils";
 
-// For client components, this creates a singleton instance
 let supabaseInstance: ReturnType<typeof createClient> | null = null;
 
 function getSupabaseClient() {
@@ -18,10 +13,6 @@ function getSupabaseClient() {
 
 const supabase = getSupabaseClient();
 
-/**
- * Schema-only type matching the mentors table exactly
- * Fields: id, bio, expertise, region, band, photo_url, display_name, created_at, updated_at
- */
 export interface MentorSchema {
   id: string;
   bio: string | null;
@@ -57,10 +48,6 @@ export interface MentorSession {
   loginTime: string;
 }
 
-/**
- * Get all mentors from Supabase mentors table
- * Returns only schema fields: id, bio, expertise, region, band, photo_url, display_name, created_at, updated_at
- */
 export async function getMentors(): Promise<MentorSchema[]> {
   try {
     const { data, error } = await supabase
@@ -82,10 +69,6 @@ export async function getMentors(): Promise<MentorSchema[]> {
   }
 }
 
-/**
- * Get a single mentor by ID from Supabase
- * Returns raw database record (only schema fields)
- */
 export async function getMentorById(id: string): Promise<MentorSchema | null> {
   try {
     const { data, error } = await supabase
@@ -106,18 +89,10 @@ export async function getMentorById(id: string): Promise<MentorSchema | null> {
   }
 }
 
-/**
- * Get all approved mentors from Supabase
- * @deprecated Use getMentors() instead - this is just a wrapper
- */
 export async function getApprovedMentors(): Promise<MentorSchema[]> {
   return getMentors();
 }
 
-/**
- * Get mentor applications from localStorage (legacy - for any pending applications stored locally)
- * This is kept for backward compatibility if there are local applications not yet in the database
- */
 export function getMentorApplications(): MentorApplication[] {
   if (typeof window === "undefined") return [];
 
@@ -138,11 +113,6 @@ export async function getMentorCount(): Promise<number> {
 }
 
 
-/**
- * Approve a mentor application (Admin function)
- * This would typically create a record in the mentors table
- * For now, this updates local storage as a transition step
- */
 export async function approveMentorApplication(
   applicationId: string
 ): Promise<boolean> {
@@ -154,14 +124,10 @@ export async function approveMentorApplication(
       return false;
     }
 
-    // Update application status in localStorage
     application.status = "approved";
     application.approved = true;
     localStorage.setItem("mentorApplications", JSON.stringify(applications));
 
-    // For now, also add to approved mentors in localStorage
-    const approvedMentors = getApprovedMentors();
-    // This will be async, so we'll keep local storage for now
     const approvedMentorsLocal = JSON.parse(
       localStorage.getItem("approvedMentors") || "[]"
     );
@@ -178,9 +144,6 @@ export async function approveMentorApplication(
   }
 }
 
-/**
- * Reject a mentor application (Admin function)
- */
 export function rejectMentorApplication(
   applicationId: string,
   reason?: string
@@ -204,9 +167,6 @@ export function rejectMentorApplication(
   }
 }
 
-/**
- * Check if a user is signed in as a mentor
- */
 export function getMentorSession(): MentorSession | null {
   if (typeof window === "undefined") return null;
 
@@ -214,31 +174,15 @@ export function getMentorSession(): MentorSession | null {
   return session ? JSON.parse(session) : null;
 }
 
-/**
- * Sign out mentor
- */
 export function signOutMentor(): void {
   if (typeof window !== "undefined") {
     localStorage.removeItem("mentorSession");
   }
 }
 
-/**
- * Check if an email is already registered as a mentor
- */
 export async function isMentorEmailRegistered(email: string): Promise<boolean> {
   try {
-    // We can't directly query auth.users, but we can check if there's a mentor record
-    // This would require joining with auth.users via a database function or view
-    // For now, we'll check the mentors table based on other criteria
-
-    // Note: This is a simplified check. In production, you'd want to:
-    // 1. Create a database view that joins mentors with auth.users
-    // 2. Or use a Supabase Edge Function to check email in auth.users
-
     const mentors = await getMentors();
-    // Since we don't have email in mentors table directly, we can't fully check this
-    // This is kept for backward compatibility
     return false;
   } catch (error) {
     console.error("Error checking mentor email:", error);
@@ -246,9 +190,6 @@ export async function isMentorEmailRegistered(email: string): Promise<boolean> {
   }
 }
 
-/**
- * Check if an application already exists for an email
- */
 export function hasExistingApplication(email: string): boolean {
   if (typeof window === "undefined") return false;
 
@@ -258,18 +199,11 @@ export function hasExistingApplication(email: string): boolean {
   );
 }
 
-/**
- * Get pending applications count (Admin function)
- */
 export function getPendingApplicationsCount(): number {
   const applications = getMentorApplications();
   return applications.filter((app) => app.status === "pending").length;
 }
 
-/**
- * Load all mentors with connection status
- * Combines getMentors, convertApplicationToMentor, and getMentorsWithConnection
- */
 export async function loadMentorsWithConnection(): Promise<Mentor[]> {
   const { getMentorsWithConnection } = await import("./progressUtils");
   const mentors = await getMentors();
@@ -282,9 +216,6 @@ export async function getConnectedMentorsCount(): Promise<number> {
   return mentors.filter((m) => m.connected).length;
 }
 
-/**
- * Convert mentor schema or application to Mentor interface
- */
 export function convertApplicationToMentor(
   application: MentorSchema | MentorApplication
 ): Mentor {
@@ -337,3 +268,15 @@ export function convertApplicationToMentor(
     };
   }
 }
+
+export const getStats = async () => {
+  const progress = await getProgress();
+  return {
+    totalCompleted: progress.completedLessons.length,
+    totalInProgress: Object.keys(progress.lessonProgress).filter(
+      (id) =>
+        progress.lessonProgress[id] > 0 && progress.lessonProgress[id] < 100
+    ).length,
+    connectedMentorsCount: progress.connectedMentors.length,
+  };
+};
