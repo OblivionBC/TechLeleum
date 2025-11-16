@@ -119,6 +119,10 @@ export default function LessonMap() {
                             </p>
                         </div>
                     ))}
+                    <div className="
+          p-5 rounded-xl bg-white shadow-md border border-amber-200
+          cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all
+        " onClick={()=>{setArr([])}}>  Back</div>
                 </div>
             </div>)}
 
