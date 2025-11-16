@@ -1,3 +1,4 @@
+'use client'
 import { DeployButton } from "@/components/deploy-button";
 import { EnvVarWarning } from "@/components/env-var-warning";
 import { AuthButton } from "@/components/auth-button";
@@ -7,9 +8,20 @@ import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-ste
 import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
+import dynamic from 'next/dynamic';
+
+const BlocklyPlay = dynamic(() => import('./component/BlocklyPlay'), {
+    ssr: false   // <-- THE MAGIC FLAG
+});
+
 
 export default function Home() {
   return (
+      <div style={{height: "100vh"}}>
+        <BlocklyPlay></BlocklyPlay>
+      </div>
+)
+  /*return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
@@ -47,5 +59,5 @@ export default function Home() {
         </footer>
       </div>
     </main>
-  );
+  );*/
 }

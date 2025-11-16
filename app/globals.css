@@ -66,3 +66,8 @@
     @apply bg-background text-foreground;
   }
 }
+
+
+.blocklyFlyoutScrollbar[display="none"] {
+  display: none;
+}
