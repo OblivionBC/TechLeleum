@@ -158,13 +158,18 @@ export default function AppNavBar() {
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg">
-                <div className="px-2 py-1.5">
-                  <p className="text-sm font-semibold">{getUserDisplayName()}</p>
+
+                {/* USER NAME SECTION - Using explicit text colors to ensure visibility */}
+                <div className="px-3 py-2 space-y-0.5">
+                  <p className="text-sm font-semibold text-gray-900">{getUserDisplayName()}</p> 
                   {user.email && (
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    <p className="text-xs text-gray-600 truncate">{user.email}</p>
                   )}
                 </div>
+
                 <DropdownMenuSeparator />
+
+                {/* LOGOUT ITEM */}
                 <DropdownMenuItem
                   onClick={handleLogout}
                   className="cursor-pointer text-red-600 focus:text-red-600"
@@ -172,7 +177,9 @@ export default function AppNavBar() {
                   <LogOut className="mr-2 h-4 w-4" />
                   Logout
                 </DropdownMenuItem>
+
               </DropdownMenuContent>
+
             </DropdownMenu>
           )}
         </div>

@@ -48,7 +48,6 @@ export default function Lessons() {
             <footer className="footer">
                 <p>© 2025 Indigenous Youth Code. All rights reserved.</p>
                 <p>Built with respect for Coast Salish traditions and territories.</p>
-                <a className="admin-link" href="#">Admin Portal</a>
             </footer>
 
         </div>

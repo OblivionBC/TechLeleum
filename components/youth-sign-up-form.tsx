@@ -25,6 +25,12 @@ export function YouthSignUpForm() {
     setError('');
     setIsLoading(true);
 
+    if (!displayName.trim()) {
+      setError('Display Name is required.');
+      setIsLoading(false);
+      return;
+    }
+    
     if (password !== repeatPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
@@ -44,6 +50,7 @@ export function YouthSignUpForm() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/confirm`,
+          data: { display_name: displayName.trim() },
         },
       });
 
@@ -63,12 +70,13 @@ export function YouthSignUpForm() {
         .from('youth')
         .insert({
           id: authData.user.id,
-          display_name: displayName || null,
+          display_name: displayName.trim(),
           band: band || null,
           photo_url: null,
         });
 
       if (profileError) {
+        console.error('Profile insertion error:', profileError);
         setError('Account created but profile setup failed. You can complete your profile later.');
       }
 
@@ -123,6 +131,8 @@ export function YouthSignUpForm() {
 
             <CardContent className="pt-6">
               <form onSubmit={handleSignUp} className="space-y-6">
+                
+                {/* Display Name Field (Fixed text color) */}
                 <div className="space-y-2">
                   <Label htmlFor="displayName" className="text-amber-950 flex items-center gap-2">
                     <UserCircle className="w-4 h-4" />
@@ -134,12 +144,14 @@ export function YouthSignUpForm() {
                     placeholder="Your name"
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
+                    required 
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-gray-900 placeholder-gray-500" // ✨ ADDED text-gray-900
                   />
-                  <p className="text-xs text-amber-700">This is how others will see your name</p>
+                  <p className="text-xs text-amber-700">This is how others will see your name (Required)</p>
                 </div>
 
+                {/* Band / Community Field (Fixed text color) */}
                 <div className="space-y-2">
                   <Label htmlFor="band" className="text-amber-950">
                     Band / Community (Optional)
@@ -151,10 +163,11 @@ export function YouthSignUpForm() {
                     value={band}
                     onChange={(e) => setBand(e.target.value)}
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-gray-900 placeholder-gray-500" // ✨ ADDED text-gray-900
                   />
                 </div>
 
+                {/* Email Address Field (Fixed text color) */}
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-amber-950 flex items-center gap-2">
                     <UserCircle className="w-4 h-4" />
@@ -168,10 +181,11 @@ export function YouthSignUpForm() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-gray-900 placeholder-gray-500" // ✨ ADDED text-gray-900
                   />
                 </div>
 
+                {/* Password Field (Fixed text color) */}
                 <div className="space-y-2">
                   <Label htmlFor="password" className="text-amber-950 flex items-center gap-2">
                     <Lock className="w-4 h-4" />
@@ -180,17 +194,18 @@ export function YouthSignUpForm() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder=""
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
                     minLength={6}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-gray-900 placeholder-gray-500" // ✨ ADDED text-gray-900
                   />
                   <p className="text-xs text-amber-700">Must be at least 6 characters</p>
                 </div>
 
+                {/* Confirm Password Field (Fixed text color) */}
                 <div className="space-y-2">
                   <Label htmlFor="repeatPassword" className="text-amber-950 flex items-center gap-2">
                     <Lock className="w-4 h-4" />
@@ -199,12 +214,12 @@ export function YouthSignUpForm() {
                   <Input
                     id="repeatPassword"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder=""
                     value={repeatPassword}
                     onChange={(e) => setRepeatPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-gray-900 placeholder-gray-500" // ✨ ADDED text-gray-900
                   />
                 </div>
 
