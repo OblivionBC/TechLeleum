@@ -53,9 +53,14 @@ export default function AppNavBar() {
     router.push("/");
   };
 
+  /**
+   * Retrieves the user's display name from metadata, falls back to email part, or "User".
+   */
   const getUserDisplayName = () => {
     if (!user) return "User";
-    return user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "User";
+    // Checks for full_name, name, or the display_name from the public.youth table 
+    // (if mapped to user_metadata) or derives from email.
+    return user.user_metadata?.display_name || user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split("@")[0] || "User";
   };
 
   const getInitials = () => {
@@ -159,10 +164,9 @@ export default function AppNavBar() {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56 bg-white border border-gray-200 shadow-lg">
 
-                {/* USER NAME SECTION - Using explicit text colors to ensure visibility */}
                 <div className="px-3 py-2 space-y-0.5">
                   <p className="text-sm font-semibold text-gray-900">{getUserDisplayName()}</p> 
-                  {user.email && (
+                  {(
                     <p className="text-xs text-gray-600 truncate">{user.email}</p>
                   )}
                 </div>

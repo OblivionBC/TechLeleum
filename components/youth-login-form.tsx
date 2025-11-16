@@ -116,7 +116,8 @@ export function YouthLoginForm() {
                     onChange={(e) => setEmail(e.target.value)}
                     required
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    // ✨ FIX APPLIED: Using text-black and placeholder-gray-500
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-black placeholder-gray-500" 
                   />
                 </div>
 
@@ -128,12 +129,13 @@ export function YouthLoginForm() {
                   <Input
                     id="password"
                     type="password"
-                    placeholder="••••••••"
+                    placeholder=""
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     disabled={isLoading}
-                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                    // ✨ FIX APPLIED: Using text-black and placeholder-gray-500
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500 text-black placeholder-gray-500" 
                   />
                 </div>
 
