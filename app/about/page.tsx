@@ -1,11 +1,11 @@
-import { ImageWithFallback } from '../../../components/figma/ImageWithFallback';
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { Target, Heart, Users, Lightbulb, ArrowRight } from 'lucide-react';
 
-interface AboutProps {
-  onNavigate: (section: string) => void;
-}
-
-export default function About({ onNavigate }: AboutProps) {
+export default function About() {
+  const router = useRouter();
   return (
     <div className="min-h-screen bg-stone-50">
       {/* Hero Section */}
@@ -177,14 +177,14 @@ export default function About({ onNavigate }: AboutProps) {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => onNavigate('learning')}
+              onClick={() => router.push('/protected')}
               className="bg-amber-600 text-white px-8 py-3 rounded-lg hover:bg-amber-700 transition-colors inline-flex items-center justify-center gap-2"
             >
               Start Learning
               <ArrowRight size={20} />
             </button>
             <button
-              onClick={() => onNavigate('mentors')}
+              onClick={() => router.push('/mentors')}
               className="bg-white text-amber-900 border-2 border-amber-600 px-8 py-3 rounded-lg hover:bg-amber-50 transition-colors inline-flex items-center justify-center gap-2"
             >
               Meet Our Mentors

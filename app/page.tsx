@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
 import { BookOpen, Users, Award, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
 import { getMentorsWithConnection } from './utils/progressUtils';
 import { mentors as allMentors } from './utils/mockData';
