@@ -11,7 +11,7 @@ export default function About() {
       {/* Hero Section */}
       <section className="relative h-[50vh] overflow-hidden">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1606239763507-f44d0c248629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpZ2Vub3VzJTIweW91dGglMjBsZWFybmluZ3xlbnwxfHx8fDE3NjMyNTgzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
+          src="https://www.canada.ca/content/dam/eccc/images/science-tech/indigenous-science-autochtone/20221013-01.jpg"
           alt="Indigenous youth learning"
           className="w-full h-full object-cover"
         />
