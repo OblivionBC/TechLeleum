@@ -161,15 +161,11 @@ export function completeTopicLesson(
       }
     }
   }
-
-  // notify UI (so LearningHome can refresh immediately)
-  // LearningHome listens for this custom event and will re-read progress & recompute lines
   try {
     window.dispatchEvent(
       new CustomEvent("learningProgressChanged"),
     );
   } catch (e) {
-    // ignore if window or CustomEvent not available in some environments
   }
 }
 

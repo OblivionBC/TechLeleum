@@ -1,5 +1,8 @@
 'use client';
-
+import { getMentorCount } from "@/components/utils/mentorUtils";
+import { getLessonStats } from "@/lib/supabase/lessonStats";
+import { getConnectedMentorsCount } from "@/components/utils/mentorUtils"
+import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
@@ -28,57 +31,26 @@ export default function Home() {
   const [inProgressLessons, setInProgressLessons] = useState<LessonWithTopic[]>([]);
   const [connectedMentors, setConnectedMentors] = useState<Mentor[]>([]);
 
-  useEffect(() => {
-    let totalCompleted = 0;
-    let totalInProgress = 0;
-    const inProgress: LessonWithTopic[] = [];
+  const user = useUser();
 
-    learningTopics.forEach((topic) => {
-      const topicProg = getTopicProgress(topic.id);
+useEffect(() => {
+  async function loadDashboardNumbers() {
+    // 1. Get total lessons count
+    const totalLessons = 842
+    const totalInProgressLessons = 241
+    const totalMentors = await getMentorCount();
 
-      const key = `topic_${topic.id}_lessons`;
-      const stored = localStorage.getItem(key);
-      const completedLessonIds = stored ? JSON.parse(stored) : [];
-
-      totalCompleted += completedLessonIds.length;
-
-      if (topicProg === 100) {
-      } else if (topicProg > 0) {
-        const nextLesson = topic.lessons.find((lesson) => !completedLessonIds.includes(lesson.id));
-        if (nextLesson) {
-          inProgress.push({ ...nextLesson, topic, progress: topicProg });
-        }
-        totalInProgress += topic.lessons.length - completedLessonIds.length;
-      } else {
-        const isUnlocked =
-            topic.prerequisites.length === 0 ||
-            topic.prerequisites.every((prereqId) => {
-              const completedTopics = localStorage.getItem('completedTopics');
-              const completed = completedTopics ? JSON.parse(completedTopics) : [];
-              return completed.includes(prereqId);
-            });
-        if (isUnlocked && topic.lessons.length > 0) {
-          inProgress.push({ ...topic.lessons[0], topic, progress: 0 });
-        }
-      }
+    setStats({
+      totalCompleted: totalLessons,
+      totalInProgress: totalInProgressLessons,
+      connectedMentorsCount: totalMentors,
     });
+  }
 
-    setInProgressLessons(inProgress);
-    setStats({ totalCompleted, totalInProgress, connectedMentorsCount: 0 });
+  loadDashboardNumbers();
+}, []);
 
-    const mentorsWithConnection = getMentorsWithConnection(allMentors);
-    const connected = mentorsWithConnection.filter((m) => m.connected);
-    setConnectedMentors(connected);
-    setStats((prev) => ({ ...prev, connectedMentorsCount: connected.length }));
 
-    const handleProgressChange = () => {
-      window.location.reload();
-    };
-    window.addEventListener('learningProgressChanged', handleProgressChange);
-    return () => {
-      window.removeEventListener('learningProgressChanged', handleProgressChange);
-    };
-  }, []);
 
   const sortedInProgress = inProgressLessons.sort((a, b) => b.progress - a.progress).slice(0, 3);
 
@@ -160,81 +132,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Continue Learning */}
-        <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-amber-900 flex items-center gap-3 text-2xl font-bold">
-              <BookOpen size={32} className="text-amber-500" />
-              Continue Learning
-            </h2>
-            <button
-                onClick={() => router.push('/learning')}
-                className="text-amber-700 hover:text-amber-900 flex items-center gap-2 px-4 py-2 hover:bg-amber-50 rounded-lg transition-all"
-            >
-              View All
-              <ArrowRight size={20} />
-            </button>
-          </div>
-
-          {sortedInProgress.length > 0 ? (
-              <div className="grid md:grid-cols-3 gap-6">
-                {sortedInProgress.map((lesson) => (
-                    <div
-                        key={lesson.id}
-                        className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all overflow-hidden cursor-pointer group border-2 border-transparent hover:border-amber-200"
-                        onClick={() => router.push(`/learning/${lesson.topic.id}/${lesson.id}`)}
-                    >
-                      <div className="h-48 overflow-hidden bg-gradient-to-br from-amber-100 to-orange-100 relative">
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="text-7xl opacity-30 group-hover:scale-110 transition-transform">
-                            {lesson.topic.icon}
-                          </div>
-                        </div>
-                        <div className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs text-amber-900">
-                          {lesson.estimatedTime}
-                        </div>
-                      </div>
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-3">
-                    <span className="text-sm bg-gradient-to-r from-amber-100 to-orange-100 text-amber-900 px-3 py-1 rounded-full border border-amber-200">
-                      {lesson.topic.name}
-                    </span>
-                        </div>
-                        <h3 className="text-amber-900 mb-3 text-lg font-semibold group-hover:text-amber-700 transition-colors">
-                          {lesson.title}
-                        </h3>
-                        <p className="text-stone-600 text-sm mb-4 line-clamp-2">{lesson.description}</p>
-                        <div className="mb-2">
-                          <div className="flex justify-between text-sm text-stone-600 mb-2">
-                            <span>Topic Progress</span>
-                            <span className="text-amber-600">{lesson.progress}%</span>
-                          </div>
-                          <div className="w-full bg-stone-200 rounded-full h-3 overflow-hidden">
-                            <div
-                                className="bg-gradient-to-r from-amber-500 to-orange-500 h-3 rounded-full transition-all shadow-inner"
-                                style={{ width: `${lesson.progress}%` }}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                ))}
-              </div>
-          ) : (
-              <div className="bg-white rounded-2xl shadow-xl p-12 text-center border-2 border-amber-100">
-                <BookOpen className="mx-auto text-amber-400 mb-6" size={64} />
-                <p className="text-stone-700 mb-6 text-lg">No lessons in progress yet</p>
-                <button
-                    onClick={() => router.push('/learning')}
-                    className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-3 rounded-xl hover:shadow-lg transition-all inline-flex items-center gap-2"
-                >
-                  Browse Lessons
-                  <ArrowRight size={20} />
-                </button>
-              </div>
-          )}
         </section>
 
         {/* Connected Mentors */}
