@@ -34,7 +34,7 @@ export default function About() {
               Tech Lelum is dedicated to lowering barriers for Indigenous youth entering the technology field by creating a culturally relevant, story-based learning platform.
             </p>
             <p className="text-stone-700 mb-4">
-              We believe that programming education should honor and integrate Indigenous knowledge, stories, and values. By connecting traditional storytelling with computational thinking, we create meaningful pathways to tech careers.
+              We believe that programming education can be made to honor and integrate Indigenous knowledge, language, stories, and values. By connecting traditional storytelling with computational thinking, we create meaningful pathways to tech careers.
             </p>
             <p className="text-stone-700">
               Every lesson is designed with input from Indigenous educators, knowledge keepers, and tech professionals to ensure cultural authenticity and educational effectiveness.

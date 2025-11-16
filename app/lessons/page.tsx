@@ -11,7 +11,7 @@ export default function Lessons() {
             <header className="lesson-header">
                 <h1>Your Coding Adventure! 🚀</h1>
                 <p>
-                    Start your coding journey with fun lessons that mix traditional
+                    Start your culturally contextualized coding journey with fun lessons that mix traditional
                     stories with modern programming! ✨
                 </p>
             </header>
