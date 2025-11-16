@@ -76,10 +76,19 @@ function MentorAuthContent() {
     }
   };
 
-  // Apply centered, min-height screen only when showing the sign-in (so it vertically centers)
   return (
-    <div className={`flex w-full ${currentSection === 'mentor-signin' ? 'min-h-screen items-center justify-center' : ''}`}>
+    <div className={`relative flex w-full ${currentSection === 'mentor-signin' ? 'min-h-screen items-center justify-center' : ''} bg-stone-50`}>
+      
+     <div 
+        className="absolute bottom-0 right-0 h-96 w-96 bg-gradient-to-tl from-amber-200 to-orange-100 rounded-2xl transform translate-x-1/2 translate-y-1/2 opacity-30 blur-xl pointer-events-none"
+        aria-hidden="true"
+      />
+
       <AuthFormWrapper onNavigate={handleNavigate} isLogin={currentSection === 'mentor-signin'} />
+            <footer className="footer">
+                <p>© 2025 Indigenous Youth Code. All rights reserved.</p>
+                <p>Built with respect for Coast Salish traditions and territories.</p>
+            </footer>
     </div>
   );
 }
@@ -87,7 +96,7 @@ function MentorAuthContent() {
 export default function MentorAuthPage() {
   return (
     <Suspense fallback={
-      <div className="flex w-full min-h-screen items-center justify-center">
+      <div className="flex w-full min-h-screen items-center justify-center bg-stone-50">
         <div className="text-center">
           <p className="text-stone-600">Loading...</p>
         </div>

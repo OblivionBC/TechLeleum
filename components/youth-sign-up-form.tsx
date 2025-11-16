@@ -268,5 +268,11 @@ export function YouthSignUpForm() {
       </div>
     </div>
   );
+
+              {/* Footer */}
+            <footer className="footer">
+                <p>© 2025 Indigenous Youth Code. All rights reserved.</p>
+                <p>Built with respect for Coast Salish traditions and territories.</p>
+            </footer>
 }
 
