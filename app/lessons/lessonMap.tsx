@@ -2,9 +2,8 @@
 
 import "./lessonNode.css";
 import {useEffect, useRef, useState} from "react";
-import {getLessons} from "@/components/utils/lessonUtils";
 
-import { getLessonsByTopic, Lesson } from "@/app/utils/lessons.ts";
+import { getLessonsByTopic, Lesson } from "@/app/utils/lessons";
 import { useRouter } from "next/navigation";
 
 
