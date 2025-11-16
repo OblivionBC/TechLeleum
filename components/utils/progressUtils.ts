@@ -1,7 +1,20 @@
+"use client";
+
 import { Lesson, Mentor } from "./mockData";
 import { createClient } from "@/lib/supabase/client";
 
-const supabase = createClient();
+// Lazy initialization to avoid SSR issues
+let supabaseInstance: ReturnType<typeof createClient> | null = null;
+
+function getSupabaseClient() {
+  if (typeof window === 'undefined') {
+    throw new Error('Supabase client can only be used in client components');
+  }
+  if (!supabaseInstance) {
+    supabaseInstance = createClient();
+  }
+  return supabaseInstance;
+}
 
 export interface UserProgress {
   completedLessons: string[];
@@ -13,6 +26,7 @@ export interface UserProgress {
  * Get current user ID from Supabase auth
  */
 async function getCurrentUserId(): Promise<string | null> {
+  const supabase = getSupabaseClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
@@ -30,26 +44,18 @@ async function getYouthUserId(): Promise<string | null> {
   }
 
   try {
-    // Check if youth record exists
+    const supabase = getSupabaseClient();
     const { data: existing, error: checkError } = await supabase
       .from("youth")
       .select("id")
       .eq("id", userId)
       .single();
 
-    // If record exists, return userId
     if (existing) {
       return userId;
     }
 
-    // If not found, return null
-    if (checkError && checkError.code === "PGRST116") {
-      console.error("User is not registered as a youth");
-      return null;
-    }
-
-    // If it's a different error, log it
-    if (checkError) {
+    if (checkError && 'code' in checkError && checkError.code !== "PGRST116") {
       console.error("Error checking youth record:", checkError);
     }
 
@@ -71,6 +77,7 @@ export const getProgress = async (): Promise<UserProgress> => {
   }
 
   try {
+    const supabase = getSupabaseClient();
     // Fetch lessons progress
     const { data: lessonProgressData, error: progressError } = await supabase
       .from("lesson_progress")
@@ -94,11 +101,8 @@ export const getProgress = async (): Promise<UserProgress> => {
 
         // Extract progress percentage from progress_json
         if (item.progress_json && typeof item.progress_json === "object") {
-          const progress =
-            (item.progress_json as any).progress ||
-            (item.progress_json as any).percentage ||
-            (item.completed ? 100 : 0);
-          lessonProgress[item.lesson_id] = progress;
+          const progressJson = item.progress_json as any;
+          lessonProgress[item.lesson_id] = progressJson.progress || progressJson.percentage || (item.completed ? 100 : 0);
         } else if (item.completed) {
           lessonProgress[item.lesson_id] = 100;
         }
@@ -129,17 +133,6 @@ export const getProgress = async (): Promise<UserProgress> => {
   }
 };
 
-/**
- * Save progress to Supabase (deprecated - use updateLessonProgress instead)
- */
-export const saveProgress = async (progress: UserProgress) => {
-  const userId = await getCurrentUserId();
-  if (!userId) return;
-
-  // This function is kept for backward compatibility
-  // Individual progress updates should use updateLessonProgress
-  console.warn("saveProgress is deprecated. Use updateLessonProgress instead.");
-};
 
 /**
  * Update or create lessons progress for the current user
@@ -155,6 +148,7 @@ export const updateLessonProgress = async (
   }
 
   try {
+    const supabase = getSupabaseClient();
     const completed = progress >= 100;
     const progressJson = { progress, percentage: progress };
 
@@ -165,15 +159,15 @@ export const updateLessonProgress = async (
       .eq("user_id", userId)
       .eq("lesson_id", lessonId)
       .single();
-
-    if (checkError && checkError.code !== "PGRST116") {
-      // PGRST116 = no rows returned
+    
+    // Handle errors - PGRST116 means no record found (expected), other errors are real problems
+    if (checkError && ('code' in checkError && checkError.code !== "PGRST116")) {
       console.error("Error checking existing progress:", checkError);
       return;
     }
 
-    if (existing) {
-      // Update existing progress
+    // If record exists, update it; otherwise create a new one
+    if (existing?.id) {
       const { error: updateError } = await supabase
         .from("lesson_progress")
         .update({
@@ -187,7 +181,6 @@ export const updateLessonProgress = async (
         console.error("Error updating lessons progress:", updateError);
       }
     } else {
-      // Create new progress record
       const { error: insertError } = await supabase
         .from("lesson_progress")
         .insert({
@@ -219,6 +212,7 @@ export const connectMentor = async (mentorId: string, message?: string) => {
   const requestMessage = message?.trim() || "Request for mentorship connection";
 
   try {
+    const supabase = getSupabaseClient();
     // Check if request already exists
     const { data: existing, error: checkError } = await supabase
       .from("mentorship_requests")
@@ -227,7 +221,7 @@ export const connectMentor = async (mentorId: string, message?: string) => {
       .eq("mentor_id", mentorId)
       .single();
 
-    if (checkError && checkError.code !== "PGRST116") {
+    if (checkError && ('code' in checkError && checkError.code !== "PGRST116")) {
       console.error("Error checking existing mentorship request:", checkError);
       return;
     }
@@ -281,6 +275,7 @@ export const disconnectMentor = async (mentorId: string) => {
   }
 
   try {
+    const supabase = getSupabaseClient();
     // Update status to rejected instead of deleting (for record keeping)
     const { error } = await supabase
       .from("mentorship_requests")

@@ -1,3 +1,5 @@
+"use client";
+
 import "./lessons.css";
 import LessonMap from "./lessonMap";
 
