@@ -1,5 +1,9 @@
 'use client';
-
+import { getTotalLessonsCount } from "@/components/utils/lessonUtils";
+import { getMentorCount } from "@/components/utils/mentorUtils";
+import { getLessonStats } from "@/lib/supabase/lessonStats";
+import { getConnectedMentorsCount } from "@/components/utils/mentorUtils"
+import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
@@ -31,57 +35,28 @@ export default function Home() {
   const [inProgressLessons, setInProgressLessons] = useState<LessonWithTopic[]>([]);
   const [connectedMentors, setConnectedMentors] = useState<Mentor[]>([]);
 
-  useEffect(() => {
-    let totalCompleted = 0;
-    let totalInProgress = 0;
-    const inProgress: LessonWithTopic[] = [];
+  const user = useUser();
 
-    learningTopics.forEach((topic) => {
-      const topicProg = getTopicProgress(topic.id);
+useEffect(() => {
+  async function loadDashboardNumbers() {
+    // 1. Get total lessons count
+    const totalLessons = await getTotalLessonsCount();
 
-      const key = `topic_${topic.id}_lessons`;
-      const stored = localStorage.getItem(key);
-      const completedLessonIds = stored ? JSON.parse(stored) : [];
+    // 2. Get mentor total count
+    const totalMentors = await getMentorCount();
 
-      totalCompleted += completedLessonIds.length;
-
-      if (topicProg === 100) {
-      } else if (topicProg > 0) {
-        const nextLesson = topic.lessons.find((lesson) => !completedLessonIds.includes(lesson.id));
-        if (nextLesson) {
-          inProgress.push({ ...nextLesson, topic, progress: topicProg });
-        }
-        totalInProgress += topic.lessons.length - completedLessonIds.length;
-      } else {
-        const isUnlocked =
-            topic.prerequisites.length === 0 ||
-            topic.prerequisites.every((prereqId) => {
-              const completedTopics = localStorage.getItem('completedTopics');
-              const completed = completedTopics ? JSON.parse(completedTopics) : [];
-              return completed.includes(prereqId);
-            });
-        if (isUnlocked && topic.lessons.length > 0) {
-          inProgress.push({ ...topic.lessons[0], topic, progress: 0 });
-        }
-      }
+    // Update UI
+    setStats({
+      totalCompleted: totalLessons,      // changed to total lessons
+      totalInProgress: totalLessons,     // same number (as you requested)
+      connectedMentorsCount: totalMentors,
     });
+  }
 
-    setInProgressLessons(inProgress);
-    setStats({ totalCompleted, totalInProgress, connectedMentorsCount: 0 });
+  loadDashboardNumbers();
+}, []);
 
-    const mentorsWithConnection = getMentorsWithConnection(allMentors);
-    const connected = mentorsWithConnection.filter((m) => m.connected);
-    setConnectedMentors(connected);
-    setStats((prev) => ({ ...prev, connectedMentorsCount: connected.length }));
 
-    const handleProgressChange = () => {
-      window.location.reload();
-    };
-    window.addEventListener('learningProgressChanged', handleProgressChange);
-    return () => {
-      window.removeEventListener('learningProgressChanged', handleProgressChange);
-    };
-  }, []);
 
   const sortedInProgress = inProgressLessons.sort((a, b) => b.progress - a.progress).slice(0, 3);
 
