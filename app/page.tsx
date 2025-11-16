@@ -82,7 +82,7 @@ export default function Home() {
             <div className="text-center text-white px-4 max-w-4xl mx-auto">
               <div className="flex items-center justify-center gap-3 mb-4">
                 <Sparkles size={32} className="text-amber-400 animate-pulse" />
-                <h1 className="text-4xl md:text-6xl text-white">Tech Leleum</h1>
+                <h1 className="text-4xl md:text-6xl text-white">Tech Lelum</h1>
                 <Sparkles size={32} className="text-amber-400 animate-pulse" />
               </div>
               <p className="text-xl md:text-2xl text-amber-100 max-w-3xl mx-auto mb-8 leading-relaxed">
@@ -221,7 +221,7 @@ export default function Home() {
                 <h2 className="text-amber-900 text-2xl font-bold">Our Mission</h2>
               </div>
               <p className="text-stone-700 mb-5 text-lg leading-relaxed">
-                Tech Leleum combines traditional storytelling with modern programming education, creating a culturally relevant pathway for Indigenous youth to enter the technology field.
+                Tech Lelum combines traditional storytelling with modern programming education, creating a culturally relevant pathway for Indigenous youth to enter the technology field.
               </p>
               <p className="text-stone-700 mb-5 text-lg leading-relaxed">
                 Every lesson integrates Coast Salish stories, values, and knowledge with fundamental programming concepts, making coding education meaningful and connected to our culture.

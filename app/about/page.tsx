@@ -17,7 +17,7 @@ export default function About() {
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40 flex items-center justify-center">
           <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl text-white mb-4">About Tech Leleum</h1>
+            <h1 className="text-4xl md:text-5xl text-white mb-4">About Tech Lelum</h1>
             <p className="text-xl text-amber-100 max-w-2xl mx-auto">
               Bridging traditional knowledge and modern technology
             </p>
@@ -31,7 +31,7 @@ export default function About() {
           <div>
             <h2 className="text-amber-900 mb-6">Our Mission</h2>
             <p className="text-stone-700 mb-4 text-lg">
-              Tech Leleum is dedicated to lowering barriers for Indigenous youth entering the technology field by creating a culturally relevant, story-based learning platform.
+              Tech Lelum is dedicated to lowering barriers for Indigenous youth entering the technology field by creating a culturally relevant, story-based learning platform.
             </p>
             <p className="text-stone-700 mb-4">
               We believe that programming education should honor and integrate Indigenous knowledge, stories, and values. By connecting traditional storytelling with computational thinking, we create meaningful pathways to tech careers.
@@ -173,7 +173,7 @@ export default function About() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-amber-900 mb-6">Join Our Community</h2>
           <p className="text-stone-700 text-lg mb-8">
-            Whether you're a young learner, an experienced tech professional, or a community member who wants to support, there's a place for you in Tech Leleum.
+            Whether you're a young learner, an experienced tech professional, or a community member who wants to support, there's a place for you in Tech Lelum.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button

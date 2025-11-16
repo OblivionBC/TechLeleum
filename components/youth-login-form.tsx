@@ -74,7 +74,7 @@ export function YouthLoginForm() {
             <GraduationCap className="w-16 h-16 mx-auto mb-4 text-amber-200" />
             <h1 className="text-5xl mb-4 text-amber-50">Youth Sign In</h1>
             <p className="text-xl text-amber-100 max-w-2xl mx-auto">
-              Continue your learning journey with Tech Leleum
+              Continue your learning journey with Tech Lelum
             </p>
           </div>
         </div>

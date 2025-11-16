@@ -5,7 +5,7 @@ JavaScript API Reference | Supabase Docs
 
 Mastering Supabase with Next.js: The Complete Developer's Guide
 Next.js 15 + Supabase Edge Functions Configuration Guide
-OblivionBC / TechLeleum — Updated Architecture Draft
+OblivionBC / TechLelum — Updated Architecture Draft
 A full-stack learning platform for Indigenous youth featuring:
 Blockly-based contextual programming lessons
 
