@@ -1,2 +1,2 @@
-# TechLeleum
+# TechLelum
 A HackCamp Project

@@ -93,7 +93,7 @@ export default function AppNavBar() {
             ${isActive("/") ? "text-white" : "text-[#FBE9C6] hover:text-white"}
           `}
         >
-          Tech Leleum
+          Tech Lelum
         </Link>
 
         <NavigationMenu>

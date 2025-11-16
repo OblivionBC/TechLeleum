@@ -82,7 +82,7 @@ export function YouthSignUpForm() {
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="text-center text-white px-4">
             <Sparkles className="w-16 h-16 mx-auto mb-4 text-amber-200" />
-            <h1 className="text-5xl mb-4 text-amber-50">Join Tech Leleum</h1>
+            <h1 className="text-5xl mb-4 text-amber-50">Join Tech Lelum</h1>
             <p className="text-xl text-amber-100 max-w-2xl mx-auto">
               Start your journey in technology and coding
             </p>
@@ -108,7 +108,7 @@ export function YouthSignUpForm() {
                 Create Youth Account
               </CardTitle>
               <CardDescription className="text-amber-900">
-                Sign up to start your learning journey with Tech Leleum
+                Sign up to start your learning journey with Tech Lelum
               </CardDescription>
             </CardHeader>
 
