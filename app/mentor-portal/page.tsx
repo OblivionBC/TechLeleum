@@ -77,19 +77,22 @@ function MentorAuthContent() {
   };
 
   return (
+      <div>
     <div className={`relative flex w-full ${currentSection === 'mentor-signin' ? 'min-h-screen items-center justify-center' : ''} bg-stone-50`}>
       
      <div 
         className="absolute bottom-0 right-0 h-96 w-96 bg-gradient-to-tl from-amber-200 to-orange-100 rounded-2xl transform translate-x-1/2 translate-y-1/2 opacity-30 blur-xl pointer-events-none"
         aria-hidden="true"
       />
-
+      <div className="flex-row">
       <AuthFormWrapper onNavigate={handleNavigate} isLogin={currentSection === 'mentor-signin'} />
-            <footer className="footer">
-                <p>© 2025 Indigenous Youth Code. All rights reserved.</p>
-                <p>Built with respect for Coast Salish traditions and territories.</p>
-            </footer>
+      </div>
     </div>
+        <footer className="footer">
+          <p>© 2025 Indigenous Youth Code. All rights reserved.</p>
+          <p>Built with respect for Coast Salish traditions and territories.</p>
+        </footer>
+      </div>
   );
 }
 

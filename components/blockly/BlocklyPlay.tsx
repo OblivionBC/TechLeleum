@@ -302,7 +302,7 @@ export default function MyBlocklyEditor({ toolboxConfiguration = MY_TOOLBOX, les
 
     return (
         <div className="flex flex-col h-full">
-        <div className={style.my_div}
+        <div style={{ maxHeight: 'none', overflowY: 'auto' }}
              ref={containerRef}>
             <BlocklyWorkspace
                     className={style.my_div}
@@ -373,7 +373,7 @@ export default function MyBlocklyEditor({ toolboxConfiguration = MY_TOOLBOX, les
 
             {/* Output Panel */}
             {showOutput && (
-                <div className="border-t border-stone-300 bg-stone-900 text-green-400 p-4" style={{ maxHeight: '400px', overflowY: 'auto' }} ref={outputRef}>
+                <div className="border-t border-stone-300 bg-stone-900 text-green-400 p-4 max-h-0" style={{ maxHeight: 'none', overflowY: 'auto' }} ref={outputRef}>
                     <div className="font-mono text-sm whitespace-pre-wrap">
                         {output.length > 0 ? output.map((line, i) => (
                             <div key={i}>{line}</div>
