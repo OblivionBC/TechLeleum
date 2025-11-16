@@ -59,7 +59,7 @@ export default function MentorDetailPage() {
   const handleConnectMentor = async () => {
     if (mentor && message.trim()) {
       try {
-        await connectMentor(mentor.id);
+        await connectMentor(mentor.id, message);
         setMentor({ ...mentor, connected: true });
         setRequestSent(true);
         setTimeout(() => {
@@ -69,6 +69,8 @@ export default function MentorDetailPage() {
         }, 2000);
       } catch (error) {
         console.error("Error connecting to mentor:", error);
+        const errorMessage = error instanceof Error ? error.message : "Failed to connect to mentor. Please ensure you are registered as a youth.";
+        alert(errorMessage);
       }
     }
   };

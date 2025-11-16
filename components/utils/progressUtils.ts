@@ -20,6 +20,47 @@ async function getCurrentUserId(): Promise<string | null> {
 }
 
 /**
+ * Check if the current user exists in the youth table
+ * Returns the userId if they exist, null otherwise
+ */
+async function getYouthUserId(): Promise<string | null> {
+  const userId = await getCurrentUserId();
+  if (!userId) {
+    return null;
+  }
+
+  try {
+    // Check if youth record exists
+    const { data: existing, error: checkError } = await supabase
+      .from("youth")
+      .select("id")
+      .eq("id", userId)
+      .single();
+
+    // If record exists, return userId
+    if (existing) {
+      return userId;
+    }
+
+    // If not found, return null
+    if (checkError && checkError.code === "PGRST116") {
+      console.error("User is not registered as a youth");
+      return null;
+    }
+
+    // If it's a different error, log it
+    if (checkError) {
+      console.error("Error checking youth record:", checkError);
+    }
+
+    return null;
+  } catch (error) {
+    console.error("Error checking youth record:", error);
+    return null;
+  }
+}
+
+/**
  * Get progress for the current user from Supabase
  */
 export const getProgress = async (): Promise<UserProgress> => {
@@ -168,12 +209,14 @@ export const updateLessonProgress = async (
 /**
  * Create or update a mentorship request (connect to mentor)
  */
-export const connectMentor = async (mentorId: string) => {
-  const userId = await getCurrentUserId();
+export const connectMentor = async (mentorId: string, message?: string) => {
+  const userId = await getYouthUserId();
   if (!userId) {
-    console.error("No user logged in");
-    return;
+    console.error("User is not registered as a youth. Cannot connect to mentor.");
+    throw new Error("You must be registered as a youth to connect with mentors.");
   }
+
+  const requestMessage = message?.trim() || "Request for mentorship connection";
 
   try {
     // Check if request already exists
@@ -199,6 +242,7 @@ export const connectMentor = async (mentorId: string) => {
         .from("mentorship_requests")
         .update({
           status: "pending",
+          message: requestMessage,
           updated_at: new Date().toISOString(),
         })
         .eq("id", existing.id);
@@ -214,7 +258,7 @@ export const connectMentor = async (mentorId: string) => {
           youth_id: userId,
           mentor_id: mentorId,
           status: "pending",
-          message: "Request for mentorship connection",
+          message: requestMessage,
         });
 
       if (insertError) {
