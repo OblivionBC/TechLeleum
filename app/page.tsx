@@ -9,14 +9,16 @@ import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
 import { hasEnvVars } from "@/lib/utils";
 import Link from "next/link";
 import dynamic from 'next/dynamic';
+import Lesson from "@/app/Lesson/Lesson";
 
-const BlocklyPlay = dynamic(() => import('./component/BlocklyPlay'), {
+const BlocklyPlay = dynamic(() => import('@/app/Blockly/BlocklyPlay'), {
     ssr: false   // <-- THE MAGIC FLAG
 });
 
 
 export default function Home() {
-  return (
+  return (<Lesson></Lesson>)
+  /*return (
     <main className="min-h-screen flex flex-col items-center">
       <div className="flex-1 w-full flex flex-col gap-20 items-center">
         <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
@@ -54,5 +56,5 @@ export default function Home() {
         </footer>
       </div>
     </main>
-  );
+  );*/
 }
