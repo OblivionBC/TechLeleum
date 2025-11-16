@@ -14,6 +14,7 @@ import {
   getMentorById,
   convertApplicationToMentor,
 } from "@/components/utils/mentorUtils";
+import { MentorChatModal } from "@/components/mentor-chat-modal";
 
 export default function MentorDetailPage() {
   const router = useRouter();
@@ -25,6 +26,7 @@ export default function MentorDetailPage() {
   const [showRequestModal, setShowRequestModal] = useState(false);
   const [requestSent, setRequestSent] = useState(false);
   const [message, setMessage] = useState("");
+  const [showChatModal, setShowChatModal] = useState(false);
 
   useEffect(() => {
     const loadMentor = async () => {
@@ -186,7 +188,10 @@ export default function MentorDetailPage() {
                         <CheckCircle size={20} />
                         Connected
                       </button>
-                      <button className="w-full bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors flex items-center justify-center gap-2">
+                      <button 
+                        onClick={() => setShowChatModal(true)}
+                        className="w-full bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors flex items-center justify-center gap-2"
+                      >
                         <Mail size={20} />
                         Send Message
                       </button>
@@ -334,6 +339,16 @@ export default function MentorDetailPage() {
             )}
           </div>
         </div>
+      )}
+
+      {/* Chat Modal */}
+      {mentor && (
+        <MentorChatModal
+          isOpen={showChatModal}
+          onClose={() => setShowChatModal(false)}
+          mentorId={mentor.id}
+          mentorName={mentor.display_name}
+        />
       )}
     </div>
   );
