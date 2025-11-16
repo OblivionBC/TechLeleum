@@ -1,15 +1,11 @@
 'use client';
 import { getMentorCount } from "@/components/utils/mentorUtils";
-import { getLessonStats } from "@/lib/supabase/lessonStats";
-import { getConnectedMentorsCount } from "@/components/utils/mentorUtils"
-import { useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
-import { BookOpen, Users, Award, TrendingUp, ArrowRight, Sparkles, LogIn } from 'lucide-react';
-import { getMentorsWithConnection } from './utils/progressUtils';
-import { mentors as allMentors, Mentor } from './utils/mockData';
-import { learningTopics, getTopicProgress, TopicLesson, Topic } from './utils/learningMapData';
+import { Users, Award, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
+import { Mentor } from './utils/mockData';
+import { TopicLesson, Topic } from './utils/learningMapData';
 interface LessonWithTopic extends TopicLesson {
   topic: Topic;
   progress: number;
@@ -31,24 +27,40 @@ export default function Home() {
   const [inProgressLessons, setInProgressLessons] = useState<LessonWithTopic[]>([]);
   const [connectedMentors, setConnectedMentors] = useState<Mentor[]>([]);
 
-  const user = useUser();
+  useEffect(() => {
+    async function loadDashboardNumbers() {
+      // 1. Get total lessons count
+      const totalLessons = 842
+      const totalInProgressLessons = 241
+      const totalMentors = await getMentorCount();
 
-useEffect(() => {
-  async function loadDashboardNumbers() {
-    // 1. Get total lessons count
-    const totalLessons = 842
-    const totalInProgressLessons = 241
-    const totalMentors = await getMentorCount();
+      setStats({
+        totalCompleted: totalLessons,
+        totalInProgress: totalInProgressLessons,
+        connectedMentorsCount: totalMentors,
+      });
+    }
 
-    setStats({
-      totalCompleted: totalLessons,
-      totalInProgress: totalInProgressLessons,
-      connectedMentorsCount: totalMentors,
-    });
-  }
+    loadDashboardNumbers();
+  }, []);
 
-  loadDashboardNumbers();
-}, []);
+  useEffect(() => {
+    async function loadRandomMentors() {
+      try {
+        const response = await fetch('/api/mentors/random');
+        if (response.ok) {
+          const mentors = await response.json();
+          setConnectedMentors(mentors);
+        } else {
+          console.error('Failed to fetch random mentors');
+        }
+      } catch (error) {
+        console.error('Error fetching random mentors:', error);
+      }
+    }
+
+    loadRandomMentors();
+  }, []);
 
 
 
