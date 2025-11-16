@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ImageWithFallback } from '@/components/figma/ImageWithFallback';
-import { BookOpen, Users, Award, TrendingUp, ArrowRight, Sparkles } from 'lucide-react';
+import { BookOpen, Users, Award, TrendingUp, ArrowRight, Sparkles, LogIn } from 'lucide-react';
 import { getMentorsWithConnection } from './utils/progressUtils';
 import { mentors as allMentors, Mentor } from './utils/mockData';
 import { learningTopics, getTopicProgress, TopicLesson, Topic } from './utils/learningMapData';
@@ -12,10 +12,7 @@ interface LessonWithTopic extends TopicLesson {
   progress: number;
 }
 
-// 💡 New Image URL provided by the user
 const NEW_HERO_IMAGE_URL = 'https://t3.ftcdn.net/jpg/00/74/65/96/360_F_74659654_E0VLKWSUlCUzlHKQskuTp2P3wC8kIvNN.jpg';
-
-// Restoring the original image URL for the About Section (which was a totem pole)
 const ABOUT_IMAGE_URL = 'https://images.unsplash.com/photo-1637177304935-382b60b372cf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx0b3RlbSUyMHBvbGUlMjBhcnR8ZW58MXx8fHwxNzYzMjYyNDAzfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral';
 
 
@@ -93,7 +90,6 @@ export default function Home() {
           <ImageWithFallback
               src={NEW_HERO_IMAGE_URL}
               alt="Indigenous youth in a group learning setting"
-              // Adding 'block' here prevents the small vertical gap below the image
               className="w-full h-full object-cover brightness-75 block"
           />
 
@@ -108,13 +104,21 @@ export default function Home() {
               <p className="text-xl md:text-2xl text-amber-100 max-w-3xl mx-auto mb-8 leading-relaxed">
                 Learn programming through our stories, guided by our community
               </p>
-              <button
-                  onClick={() => router.push('/learning')}
-                  className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-10 py-4 rounded-xl transition-all shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3 text-lg"
-              >
-                Start Learning
-                <ArrowRight size={24} />
-              </button>
+              
+              {/* === START: Button Group (Start Learning + Mentor Portal) === */}
+              <div className="flex justify-center gap-4">
+                
+                {/* Primary Button: Start Learning */}
+                <button
+                    onClick={() => router.push('/learning')}
+                    className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-10 py-4 rounded-xl transition-all shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3 text-lg"
+                >
+                  Start Learning
+                  <ArrowRight size={24} />
+                </button>
+              </div>
+              {/* === END: Button Group === */}
+              
             </div>
           </div>
         </section>
@@ -292,11 +296,10 @@ export default function Home() {
         <section className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-200">
-              {/* 💡 RESTORATION: Using the specific image for the About Section */}
               <ImageWithFallback
                   src={ABOUT_IMAGE_URL}
                   alt="Traditional totem pole art"
-                  className="w-full h-full object-cover block" // Added 'block' for consistency
+                  className="w-full h-full object-cover block"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <div className="absolute bottom-6 left-6 right-6 text-white">
