@@ -85,7 +85,8 @@ export function MentorApplicationForm({ onNavigate }: MentorApplicationForm) {
   if (submitted) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50 py-16 px-4">
-        <div className="max-w-2xl mx-auto">
+        {/* Changed max-w-2xl to max-w-full to take available space, while still centering */}
+        <div className="max-w-full mx-auto"> 
           <Card className="border-2 border-green-300 shadow-xl bg-white">
             <CardHeader className="bg-gradient-to-br from-green-50 to-emerald-50 border-b-2 border-green-200">
               <div className="flex items-center justify-center mb-4">
@@ -160,7 +161,7 @@ export function MentorApplicationForm({ onNavigate }: MentorApplicationForm) {
       {/* Hero Section */}
       <section className="relative h-[40vh] overflow-hidden">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1606239763507-f44d0c248629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpZ2Vub3VzJTIweW91dGglMjBsZWFybmluZ3xlbnwxfHx8fDE3NjMyNTgzOTd8MA&w=1080"
+          src="https://schools.wrdsb.ca/athome/files/2020/06/nad1170px_1432040617140_eng.jpg"
           alt="Indigenous community gathering"
           className="w-full h-full object-cover"
         />
@@ -178,7 +179,8 @@ export function MentorApplicationForm({ onNavigate }: MentorApplicationForm) {
 
       {/* Application Form Section */}
       <section className="py-16 px-4">
-        <div className="max-w-3xl mx-auto">
+        {/* REMOVED max-w-3xl to allow full width (up to the container padding) */}
+        <div className="mx-auto"> 
           <Button
             onClick={() => onNavigate('mentor-signin')}
             variant="ghost"

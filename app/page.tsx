@@ -116,19 +116,6 @@ export default function Home() {
                   Start Learning
                   <ArrowRight size={24} />
                 </button>
-                
-                {/* Secondary Button: Mentor Portal */}
-                <button
-                    onClick={() => router.push('/mentorsignin')}
-                    className="
-                      bg-white/10 backdrop-blur-sm border-2 border-amber-300 text-white 
-                      px-8 py-4 rounded-xl transition-all shadow-2xl hover:bg-white/20 
-                      inline-flex items-center gap-3 text-lg font-medium
-                    "
-                >
-                  <LogIn size={24} />
-                  Mentor Portal
-                </button>
               </div>
               {/* === END: Button Group === */}
               

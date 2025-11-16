@@ -1,10 +1,12 @@
+'use client';
+
 import { useState } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './ui/card';
 import { ImageWithFallback } from './figma/ImageWithFallback';
-import { UserCircle, Lock, UserPlus, Users } from 'lucide-react';
+import { UserCircle, Lock, Users, ArrowLeft, UserPlus, Heart } from 'lucide-react';
 import { getMentorApplications } from './utils/mentorUtils';
 
 interface MentorSignInProps {
@@ -24,7 +26,11 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
     const approvedMentors = localStorage.getItem('approvedMentors');
     const mentors = approvedMentors ? JSON.parse(approvedMentors) : [];
     
+    // Find the mentor by email
     const mentor = mentors.find((m: any) => m.email === email);
+    
+    // NOTE: In a real application, you would also verify the password here.
+    // Since this is a local-storage based example, we'll assume a successful match means sign-in.
     
     if (mentor && mentor.approved) {
       // Sign in successful - store session
@@ -35,12 +41,14 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
       setError('Your application is still under review. Please check back later.');
     } else {
       // Check if there's a pending application
-      const applications = getMentorApplications();
+      // NOTE: getMentorApplications needs to be available or mocked for this to work.
+      const applications = getMentorApplications ? getMentorApplications() : [];
       const pendingApp = applications.find((app: any) => app.email === email && app.status === 'pending');
       
       if (pendingApp) {
         setError('Your application is currently under review. You will be notified once it has been processed.');
       } else {
+        // Fallback for invalid credentials or non-existent application
         setError('Invalid credentials or mentor account not found. Please apply to become a mentor first.');
       }
     }
@@ -48,11 +56,11 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-amber-50 via-stone-50 to-orange-50">
-      {/* Hero Section */}
+      {/* Hero Section - matches MentorApplicationForm sizing */}
       <section className="relative h-[40vh] overflow-hidden">
         <ImageWithFallback
-          src="https://images.unsplash.com/photo-1606239763507-f44d0c248629?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpZ2Vub3VzJTIweY91dgluZ3xlbnwxfHx8fDE3NjMyNTgzOTd8MA&ixlib=rb-4.1.0&q=80&w=1080"
-          alt="Indigenous community"
+          src="https://schools.wrdsb.ca/athome/files/2020/06/nad1170px_1432040617140_eng.jpg"
+          alt="Indigenous community gathering"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-amber-950/60 via-amber-900/40 to-transparent" />
@@ -67,71 +75,92 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
         </div>
       </section>
 
-      {/* Sign In Form Section */}
+      {/* Sign In Form Section - same section spacing and container width as MentorApplicationForm */}
       <section className="py-16 px-4">
-        <div className="max-w-md mx-auto">
+        <div className="max-w-3xl mx-auto">
+          {/* Back Button */}
+          <Button
+            onClick={() => onNavigate('home')}
+            variant="ghost"
+            className="mb-6 text-amber-900 hover:bg-amber-100"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Home
+          </Button>
+
+          {/* Card uses same framing classes as MentorApplicationForm */}
           <Card className="border-2 border-amber-200 shadow-xl bg-white/95 backdrop-blur">
-            <CardHeader className="space-y-1 bg-gradient-to-br from-amber-50 to-orange-50 border-b-2 border-amber-200">
+            <CardHeader className="bg-gradient-to-br from-amber-50 to-orange-50 border-b-2 border-amber-200">
               <CardTitle className="flex items-center gap-2 text-amber-950">
                 <UserCircle className="w-6 h-6 text-amber-700" />
-                Mentor Portal
+                Mentor Portal Sign In
               </CardTitle>
               <CardDescription className="text-amber-900">
                 Sign in to access your mentor dashboard
               </CardDescription>
             </CardHeader>
+
             <CardContent className="pt-6">
-              <form onSubmit={handleSignIn} className="space-y-4">
+              <form onSubmit={handleSignIn} className="space-y-6">
+                
+                {/* Email Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-amber-950">
+                  <Label htmlFor="email" className="text-amber-950 flex items-center gap-2">
+                    <UserCircle className="w-4 h-4" />
                     Email Address
                   </Label>
-                  <div className="relative">
-                    <UserCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
-                    <Input
-                      id="email"
-                      type="email"
-                      placeholder="mentor@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                      className="pl-10 border-amber-300 focus:border-amber-500 focus:ring-amber-500"
-                    />
-                  </div>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="mentor@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                  />
                 </div>
                 
+                {/* Password Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-amber-950">
+                  <Label htmlFor="password" className="text-amber-950 flex items-center gap-2">
+                    <Lock className="w-4 h-4" />
                     Password
                   </Label>
-                  <div className="relative">
-                    <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-amber-600" />
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
-                      className="pl-10 border-amber-300 focus:border-amber-500 focus:ring-amber-500"
-                    />
-                  </div>
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="••••••••"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="border-amber-300 focus:border-amber-500 focus:ring-amber-500"
+                  />
                 </div>
 
+                {/* Error Message */}
                 {error && (
                   <div className="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg">
                     <p>{error}</p>
                   </div>
                 )}
 
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg"
-                >
-                  Sign In
-                </Button>
+                {/* Submit Button - same size/appearance as MentorApplicationForm */}
+                <div className="pt-4 border-t-2 border-amber-200">
+                  <Button 
+                    type="submit" 
+                    className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white shadow-lg py-6"
+                  >
+                    <Users className="w-5 h-5 mr-2" />
+                    Sign In
+                  </Button>
+                  <p className="text-sm text-center text-amber-700 mt-4">
+                    Only approved mentors can access this portal.
+                  </p>
+                </div>
               </form>
             </CardContent>
+
+            {/* Footer area kept visually consistent with MentorApplicationForm */}
             <CardFooter className="flex flex-col space-y-4 border-t border-amber-200 bg-amber-50/50">
               <div className="text-center text-sm text-amber-900">
                 Not a mentor yet?
@@ -147,10 +176,10 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
             </CardFooter>
           </Card>
 
-          {/* Additional Info Section */}
+          {/* Additional Info Section - identical sizing/frame to MentorApplicationForm */}
           <div className="mt-8 p-6 bg-white/80 backdrop-blur rounded-xl border-2 border-amber-200 shadow-lg">
             <h3 className="text-amber-950 mb-3 flex items-center gap-2">
-              <Users className="w-5 h-5 text-amber-700" />
+              <Heart className="w-5 h-5 text-amber-700" />
               Why Become a Mentor?
             </h3>
             <ul className="space-y-2 text-amber-900">
@@ -175,12 +204,9 @@ export function LoginForm({ onNavigate }: MentorSignInProps) {
         </div>
       </section>
 
-      {/* Decorative Cultural Elements */}
-      <div className="fixed bottom-8 left-8 opacity-10 pointer-events-none hidden lg:block">
+      {/* Decorative Elements - same as MentorApplicationForm */}
+      <div className="fixed bottom-8 right-8 opacity-10 pointer-events-none hidden lg:block">
         <div className="w-24 h-48 bg-gradient-to-b from-amber-800 to-amber-950 rounded-lg"></div>
-      </div>
-      <div className="fixed top-32 right-8 opacity-10 pointer-events-none hidden lg:block">
-        <div className="w-24 h-48 bg-gradient-to-b from-orange-800 to-orange-950 rounded-lg"></div>
       </div>
     </div>
   );
