@@ -1,7 +1,7 @@
 import "./lessons.css";
-import LessonMap from "./LessonMap";
+import LessonMap from "./lessonMap";
 
-export default function LessonsPage() {
+export default function Lessons() {
     return (
         <div className="lesson-page">
 
@@ -37,7 +37,7 @@ export default function LessonsPage() {
 
             </div>
 
-            {/* Lesson Graph */}
+            {/* lessons Graph */}
             <LessonMap />
 
 

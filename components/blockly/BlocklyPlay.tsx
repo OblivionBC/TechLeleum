@@ -101,10 +101,10 @@ export const MY_TOOLBOX = {
 }
 
 export default function MyBlocklyEditor() {
-    const [xml, setXml] = useState();
+    const [xml, setXml] = useState<string | undefined>();
 
-    const workspaceRef = useRef<HTMLDivElement| undefined >(undefined);
-    const containerRef = useRef(null);
+    const workspaceRef = useRef<Blockly.WorkspaceSvg | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
 
     function handleGenerateCode() {
@@ -120,7 +120,7 @@ export default function MyBlocklyEditor() {
         Blockly.Xml.domToWorkspace(xmlDom, tempWorkspace);
 
         javascriptGenerator.addReservedWords('code');
-        var code = javascriptGenerator.workspaceToCode(tempWorkspace);
+        let code = javascriptGenerator.workspaceToCode(tempWorkspace);
 
         console.log("Generated Code:\n", code);
 
@@ -155,7 +155,9 @@ export default function MyBlocklyEditor() {
                 toolboxConfiguration={MY_TOOLBOX} // this must be a JSON toolbox definition
                 initialXml={xml}
                 onXmlChange={setXml}
-                ref={workspaceRef}
+                onWorkspaceChange={(workspace) => {
+                    workspaceRef.current = workspace;
+                }}
                 workspaceConfiguration={{
                     grid: {
                         spacing: 20,

@@ -1,26 +1,28 @@
-import "./LessonNode.css";
+"use client"
+
+import "./lessonNode.css";
 import {useEffect, useRef, useState} from "react";
 
 export default function LessonMap() {
 
-    const centerRef = useRef(null);
-    const varRef = useRef(null);
-    const seqRef = useRef(null);
-    const arrRef = useRef(null);
-    const condRef = useRef(null);
-    const funcRef = useRef(null);
-    const eventRef = useRef(null);
-    const arrListRef = useRef(null);
+    const centerRef = useRef<HTMLDivElement>(null);
+    const varRef = useRef<HTMLDivElement>(null);
+    const seqRef = useRef<HTMLDivElement>(null);
+    const arrRef = useRef<HTMLDivElement>(null);
+    const condRef = useRef<HTMLDivElement>(null);
+    const funcRef = useRef<HTMLDivElement>(null);
+    const eventRef = useRef<HTMLDivElement>(null);
+    const arrListRef = useRef<HTMLDivElement>(null);
 
     const mapRef = useRef<HTMLDivElement | null>(null);
 
-    const [lines, setLines] = useState([]);
+    const [lines, setLines] = useState<Array<[{ x: number; y: number }, { x: number; y: number }]>>([]);
 
 
     const cos = Math.cos(Math.PI/6)*300
 
     function centerOf(
-        ref: React.RefObject<HTMLElement>,
+        ref: React.RefObject<HTMLElement | null>,
         containerRect: DOMRect
     ) {
         if (!ref.current) return { x: 0, y: 0 };
