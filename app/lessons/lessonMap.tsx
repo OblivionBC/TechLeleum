@@ -2,10 +2,14 @@
 
 import "./lessonNode.css";
 import {useEffect, useRef, useState} from "react";
-import {getLessons} from "@/components/utils/lessonUtils";
+
+import { getLessonsByTopic, Lesson } from "@/app/utils/lessons";
+import { useRouter } from "next/navigation";
 
 
 export default function LessonMap() {
+
+    const router = useRouter();
 
     const centerRef = useRef<HTMLDivElement>(null);
     const varRef = useRef<HTMLDivElement>(null);
@@ -15,6 +19,8 @@ export default function LessonMap() {
     const funcRef = useRef<HTMLDivElement>(null);
     const eventRef = useRef<HTMLDivElement>(null);
     const arrListRef = useRef<HTMLDivElement>(null);
+
+    const [arr,setArr] = useState<Lesson[]>([]);
 
 
 
@@ -26,7 +32,8 @@ export default function LessonMap() {
     const cos = Math.cos(Math.PI/6)*300
 
     async function Click(){
-        const temp = await getLessons();
+        const temp = getLessonsByTopic('print')
+        setArr(temp);
         console.log(temp);
     }
 
@@ -81,10 +88,47 @@ export default function LessonMap() {
     return (
         <div ref={mapRef} className="lesson-map">
 
+
+            {arr.length > 0 && (
+            <div className="
+                    fixed inset-0 z-20
+                    flex items-center justify-center
+                    bg-black/10 backdrop-blur-sm
+                    ">
+                <div className="flex flex-col gap-4 w-[420px]">
+                    {arr.map((lesson) => (
+                        <div
+                            key={lesson.id}
+                            onClick={() => router.push(`/lessons/${lesson.id}`)}
+                            className="
+          p-5 rounded-xl bg-white shadow-md border border-amber-200
+          cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all
+        "
+                        >
+                            <h2 className="text-xl font-semibold text-amber-900">
+                                {lesson.title}
+                            </h2>
+
+                            <p className="text-stone-600 mt-1">
+                                {lesson.description}
+                            </p>
+
+                            <p className="mt-3 text-sm font-medium text-amber-700">
+                                ⏱ {lesson.estimatedTime}
+                            </p>
+                        </div>
+                    ))}
+                    <div className="
+          p-5 rounded-xl bg-white shadow-md border border-amber-200
+          cursor-pointer hover:shadow-xl hover:-translate-y-1 transition-all
+        " onClick={()=>{setArr([])}}>  Back</div>
+                </div>
+            </div>)}
+
             {/* Main Active Node */}
             <div ref={centerRef}
                  className="lesson-node active" style={{left: "calc(50% - 80px)"}}
-                onClick={Click}>
+                 onClick={Click}>
                 <span>Print&Output</span>
             </div>
 
@@ -131,9 +175,9 @@ export default function LessonMap() {
                     <line
                         key={i}
                         x1={from.x}
-                        y1={from.y }
+                        y1={from.y}
                         x2={to.x}
-                        y2={to.y }
+                        y2={to.y}
                         className="dash"
                     />
                 ))}

@@ -17,6 +17,9 @@ export class Lesson {
   topicId: string;
   toolboxConfiguration: any;
   validation: LessonValidation | null;
+  band: string;
+  indigenousWriting: string;
+  tribeImageUrl: string;
 
   constructor(
     id: string,
@@ -25,7 +28,10 @@ export class Lesson {
     estimatedTime: string,
     topicId: string,
     toolboxConfiguration: any,
-    validation: LessonValidation | null = null
+    validation: LessonValidation | null = null,
+    band: string = "",
+    indigenousWriting: string = "",
+    tribeImageUrl: string = ""
   ) {
     this.id = id;
     this.title = title;
@@ -34,6 +40,9 @@ export class Lesson {
     this.topicId = topicId;
     this.toolboxConfiguration = toolboxConfiguration;
     this.validation = validation;
+    this.band = band;
+    this.indigenousWriting = indigenousWriting;
+    this.tribeImageUrl = tribeImageUrl;
   }
 
   getToolbox() {
@@ -74,8 +83,8 @@ const defaultToolbox = [
 registerLesson(
   new Lesson(
     "print-1",
-    "First Words",
-    "Display your first message",
+    "Sharing Your Voice",
+    "In xʷməθkʷəy̓əm culture, knowledge is shared through conversation and oral teaching. When your program uses print(), it's like sharing your voice so someone else can learn from it or receive your message. Welcome someone to xʷməθkʷəy̓əm territory with a respectful greeting like ʔəy̓ skʷeyəɬ.",
     "10 min",
     "print",
     [
@@ -90,19 +99,22 @@ registerLesson(
       },
     ],
     {
-      expectedOutput: "hello world",
+      expectedOutput: "ʔəy̓ skʷeyəɬ",
       caseSensitive: false,
       trimWhitespace: true,
       exactMatch: false,
-    }
+    },
+    "Musqueam",
+    "xʷməθkʷəy̓əm",
+    "https://iconictributes.com/wp-content/uploads/www.musqueam.bc_.ca_.jpg"
   )
 );
 
 registerLesson(
   new Lesson(
     "print-2",
-    "Multiple Messages",
-    "Print several messages in sequence",
+    "Messages for the Community",
+    "In xʷməθkʷəy̓əm communities, stéʔexʷəł (children) help with community events and gatherings. When you tátələt (are learning), you practice sharing messages. Create multiple print statements that describe helping your community. Each print statement sends a message about what your program is doing, just like sharing what you're doing to help others.",
     "15 min",
     "print",
     [
@@ -112,17 +124,182 @@ registerLesson(
         colour: "#5CA68D",
         contents: [
           { kind: "block", type: "text" },
-          { kind: "block", type: "text_join" },
           { kind: "block", type: "text_print" },
         ],
       },
     ],
     {
-      expectedOutput: ["Hello", "World"],
+      expectedOutput: ["I am learning", "I am helping", "I am being a good relative"],
       caseSensitive: false,
       trimWhitespace: true,
       exactMatch: false,
-    }
+    },
+    "Musqueam",
+    "xʷməθkʷəy̓əm",
+    "https://iconictributes.com/wp-content/uploads/www.musqueam.bc_.ca_.jpg"
+  )
+);
+
+// Conditional (if statement) lessons - Coast Salish (Hul'q'umi'num')
+registerLesson(
+  new Lesson(
+    "conditionals-1",
+    "Making Decisions Like Raven",
+    "In Coast Salish stories, spaal' (Raven) brings light to the world through curiosity, observation, and careful decision-making. Like spaal', you are watching the world and noticing what needs to change. Your program behaves differently depending on what it 'sees' - this is how programs observe conditions, just as spaal' observed the environment before making choices.",
+    "15 min",
+    "conditionals",
+    [
+      {
+        kind: "category",
+        name: "Text",
+        colour: "#5CA68D",
+        contents: [
+          { kind: "block", type: "text" },
+          { kind: "block", type: "text_print" },
+        ],
+      },
+      {
+        kind: "category",
+        name: "Logic",
+        colour: "#5C81A6",
+        contents: [
+          { kind: "block", type: "controls_if" },
+          { kind: "block", type: "logic_compare" },
+          { kind: "block", type: "logic_boolean" },
+        ],
+      },
+    ],
+    {
+      expectedOutput: "It is dark",
+      caseSensitive: false,
+      trimWhitespace: true,
+      exactMatch: false,
+    },
+    "Coast Salish",
+    "hul'q'umi'num'",
+    "https://www.sfu.ca/content/sfu/brc/our-work/imesh-mobile-app/indigenous-art-walk/coast-salish-prints/jcr:content/main_content/image_1588500320.img.2000.high.jpg/1656097222232.jpeg"
+  )
+);
+
+registerLesson(
+  new Lesson(
+    "conditionals-2",
+    "A Condition Appears",
+    "In Coast Salish stories, spaal' (Raven) waits until the right moment to act. Your program also waits and checks conditions: Is it dark? Is sumshathut (the sun) available? When a condition becomes true, your program will do something - just like spaal' did when the right moment came. Learn to use if statements to check conditions and make your program respond.",
+    "20 min",
+    "conditionals",
+    [
+      {
+        kind: "category",
+        name: "Text",
+        colour: "#5CA68D",
+        contents: [
+          { kind: "block", type: "text" },
+          { kind: "block", type: "text_print" },
+        ],
+      },
+      {
+        kind: "category",
+        name: "Logic",
+        colour: "#5C81A6",
+        contents: [
+          { kind: "block", type: "controls_if" },
+          { kind: "block", type: "logic_compare" },
+          { kind: "block", type: "logic_boolean" },
+        ],
+      },
+    ],
+    {
+      expectedOutput: ["It's time to bring some light"],
+      caseSensitive: false,
+      trimWhitespace: true,
+      exactMatch: false,
+    },
+    "Coast Salish",
+    "hul'q'umi'num'",
+    "https://www.sfu.ca/content/sfu/brc/our-work/imesh-mobile-app/indigenous-art-walk/coast-salish-prints/jcr:content/main_content/image_1588500320.img.2000.high.jpg/1656097222232.jpeg"
+  )
+);
+
+registerLesson(
+  new Lesson(
+    "conditionals-3",
+    "Making a Decision",
+    "spaal' (Raven) made decisions based on what spaal' observed. Programs do the same: they check conditions and choose actions. Learn to use if-else statements to create branching logic - when one condition is true, do one thing; otherwise, do something else. This mirrors how spaal' chose different paths based on what was observed.",
+    "25 min",
+    "conditionals",
+    [
+      {
+        kind: "category",
+        name: "Text",
+        colour: "#5CA68D",
+        contents: [
+          { kind: "block", type: "text" },
+          { kind: "block", type: "text_print" },
+        ],
+      },
+      {
+        kind: "category",
+        name: "Logic",
+        colour: "#5C81A6",
+        contents: [
+          { kind: "block", type: "controls_if" },
+          { kind: "block", type: "controls_ifelse" },
+          { kind: "block", type: "logic_compare" },
+          { kind: "block", type: "logic_boolean" },
+        ],
+      },
+    ],
+    {
+      expectedOutput: ["I can brighten the world", "I must keep searching"],
+      caseSensitive: false,
+      trimWhitespace: true,
+      exactMatch: false,
+    },
+    "Coast Salish",
+    "hul'q'umi'num'",
+    "https://www.sfu.ca/content/sfu/brc/our-work/imesh-mobile-app/indigenous-art-walk/coast-salish-prints/jcr:content/main_content/image_1588500320.img.2000.high.jpg/1656097222232.jpeg"
+  )
+);
+
+registerLesson(
+  new Lesson(
+    "conditionals-4",
+    "Changing the World",
+    "In Coast Salish stories, spaal' (Raven)'s final action changed everything. When your program finds the right condition, it brings 'light' into your virtual scene. Learn to use multiple if statements to check different conditions and create programs that respond to the world around them, just as spaal' actions transformed the world.",
+    "30 min",
+    "conditionals",
+    [
+      {
+        kind: "category",
+        name: "Text",
+        colour: "#5CA68D",
+        contents: [
+          { kind: "block", type: "text" },
+          { kind: "block", type: "text_print" },
+        ],
+      },
+      {
+        kind: "category",
+        name: "Logic",
+        colour: "#5C81A6",
+        contents: [
+          { kind: "block", type: "controls_if" },
+          { kind: "block", type: "controls_ifelse" },
+          { kind: "block", type: "logic_compare" },
+          { kind: "block", type: "logic_boolean" },
+        ],
+      },
+    ],
+    {
+      expectedOutput: ["It is dark. I need to do something", "I can brighten the world now", "The world becomes bright"],
+      caseSensitive: false,
+      trimWhitespace: true,
+      exactMatch: false,
+    },
+    "Coast Salish",
+    "hul'q'umi'num'",
+    "https://www.sfu.ca/content/sfu/brc/our-work/imesh-mobile-app/indigenous-art-walk/coast-salish-prints/jcr:content/main_content/image_1588500320.img.2000.high.jpg/1656097222232.jpeg"
   )
 );
 

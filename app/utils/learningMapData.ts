@@ -15,6 +15,9 @@ export interface TopicLesson {
   title: string;
   description: string;
   estimatedTime: string;
+  band: string;
+  indigenousWriting: string;
+  tribeImageUrl: string;
 }
 
 function lessonToTopicLesson(lesson: Lesson): TopicLesson {
@@ -23,6 +26,9 @@ function lessonToTopicLesson(lesson: Lesson): TopicLesson {
     title: lesson.title,
     description: lesson.description,
     estimatedTime: lesson.estimatedTime,
+    band: lesson.band,
+    indigenousWriting: lesson.indigenousWriting,
+    tribeImageUrl: lesson.tribeImageUrl,
   };
 }
 

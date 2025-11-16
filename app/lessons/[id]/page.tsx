@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { ArrowLeft, BookOpen, Clock, CheckCircle } from "lucide-react";
+import Image from "next/image";
 import MyBlocklyEditor from "@/components/blockly/BlocklyPlay";
+import IndigenousText from "@/components/indigenous-text";
 import { learningTopics, TopicLesson, Topic } from "@/app/utils/learningMapData";
 import { getToolboxForLesson, getLessonValidation } from "@/app/utils/lessons";
 
@@ -65,22 +67,49 @@ export default function LessonDetailPage() {
             <ArrowLeft size={16} />
             Back to Lessons
           </button>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xl">{lesson.topic.icon}</span>
-            <div>
-              <h1 className="text-lg font-bold text-amber-900">{lesson.lesson.title}</h1>
-              <p className="text-sm text-stone-600">{lesson.topic.name}</p>
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-1">
+                <span className="text-xl">{lesson.topic.icon}</span>
+                <div>
+                  <h1 className="text-lg font-bold text-amber-900">{lesson.lesson.title}</h1>
+                  <p className="text-sm text-stone-600">{lesson.topic.name}</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 text-xs text-stone-500">
+                <div className="flex items-center gap-1">
+                  <Clock size={12} />
+                  <span>{lesson.lesson.estimatedTime}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <BookOpen size={12} />
+                  <span>Lesson {lesson.topic.lessons.findIndex((l) => l.id === lessonId) + 1} of {lesson.topic.lessons.length}</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-4 text-xs text-stone-500">
-            <div className="flex items-center gap-1">
-              <Clock size={12} />
-              <span>{lesson.lesson.estimatedTime}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <BookOpen size={12} />
-              <span>Lesson {lesson.topic.lessons.findIndex((l) => l.id === lessonId) + 1} of {lesson.topic.lessons.length}</span>
-            </div>
+            {lesson.lesson.band && (
+              <div className="text-right flex items-center gap-3">
+                <div>
+                  <p className="text-sm font-semibold text-amber-900">{lesson.lesson.band}</p>
+                  {lesson.lesson.indigenousWriting && (
+                    <p className="text-xs text-stone-600 mt-1">
+                      <IndigenousText text={lesson.lesson.indigenousWriting} />
+                    </p>
+                  )}
+                </div>
+                {lesson.lesson.tribeImageUrl && (
+                  <div className="relative w-24 h-24 flex-shrink-0">
+                    <Image
+                      src={lesson.lesson.tribeImageUrl}
+                      alt={`${lesson.lesson.band} crest`}
+                      fill
+                      className="object-contain"
+                      unoptimized
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -92,7 +121,9 @@ export default function LessonDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-lg shadow-md p-6">
               <h2 className="text-xl font-semibold text-amber-900 mb-4">About This Lesson</h2>
-              <p className="text-stone-700 leading-relaxed">{lesson.lesson.description}</p>
+              <p className="text-stone-700 leading-relaxed">
+                <IndigenousText text={lesson.lesson.description} />
+              </p>
             </div>
 
             <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg shadow-md p-6 border border-amber-200">
@@ -125,7 +156,7 @@ export default function LessonDetailPage() {
                         <h3 className="font-semibold text-amber-900 text-sm">Expected Output:</h3>
                       </div>
                       <p className="text-amber-800 text-sm font-mono bg-white px-3 py-2 rounded border border-amber-200">
-                        {expected}
+                        <IndigenousText text={expected} />
                       </p>
                     </div>
                   );

@@ -82,7 +82,7 @@ useEffect(() => {
                 
                 {/* Primary Button: Start Learning */}
                 <button
-                    onClick={() => router.push('/learning')}
+                    onClick={() => router.push('/lessons')}
                     className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-10 py-4 rounded-xl transition-all shadow-2xl hover:shadow-amber-500/50 inline-flex items-center gap-3 text-lg"
                 >
                   Start Learning
