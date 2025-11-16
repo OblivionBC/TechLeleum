@@ -44,6 +44,10 @@ export function YouthSignUpForm() {
         password,
         options: {
           emailRedirectTo: `${window.location.origin}/auth/confirm`,
+          data: {
+            display_name: displayName || null,
+            band: band || null,
+          },
         },
       });
 
@@ -57,19 +61,6 @@ export function YouthSignUpForm() {
         setError('Failed to create account. Please try again.');
         setIsLoading(false);
         return;
-      }
-
-      const { error: profileError } = await supabase
-        .from('youth')
-        .insert({
-          id: authData.user.id,
-          display_name: displayName || null,
-          band: band || null,
-          photo_url: null,
-        });
-
-      if (profileError) {
-        setError('Account created but profile setup failed. You can complete your profile later.');
       }
 
       router.push('/auth/sign-up-success');

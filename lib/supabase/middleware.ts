@@ -62,7 +62,7 @@ export async function updateSession(request: NextRequest) {
   // Redirect to login if accessing protected route without authentication
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone();
-    url.pathname = "/auth/login";
+    url.pathname = "/mentor-portal";
     return NextResponse.redirect(url);
   }
 
