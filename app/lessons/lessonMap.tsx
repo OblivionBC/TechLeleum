@@ -2,6 +2,8 @@
 
 import "./lessonNode.css";
 import {useEffect, useRef, useState} from "react";
+import {getLessons} from "@/components/utils/lessonUtils";
+
 
 export default function LessonMap() {
 
@@ -14,12 +16,19 @@ export default function LessonMap() {
     const eventRef = useRef<HTMLDivElement>(null);
     const arrListRef = useRef<HTMLDivElement>(null);
 
+
+
     const mapRef = useRef<HTMLDivElement | null>(null);
 
     const [lines, setLines] = useState<Array<[{ x: number; y: number }, { x: number; y: number }]>>([]);
 
 
     const cos = Math.cos(Math.PI/6)*300
+
+    async function Click(){
+        const temp = await getLessons();
+        console.log(temp);
+    }
 
     function centerOf(
         ref: React.RefObject<HTMLElement | null>,
@@ -33,6 +42,8 @@ export default function LessonMap() {
             y: rect.top - containerRect.top + rect.height / 2,
         };
     }
+
+
 
     useEffect(() => {
         function updateLines() {
@@ -71,7 +82,9 @@ export default function LessonMap() {
         <div ref={mapRef} className="lesson-map">
 
             {/* Main Active Node */}
-            <div ref={centerRef} className="lesson-node active" style={{left: "calc(50% - 80px)"}}>
+            <div ref={centerRef}
+                 className="lesson-node active" style={{left: "calc(50% - 80px)"}}
+                onClick={Click}>
                 <span>Print&Output</span>
             </div>
 
